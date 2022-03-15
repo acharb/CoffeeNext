@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  font-size: 1rem;
+  min-height: 100vh;
+  background: #abdfff;
+  font-family: Courier New;
+}
+
+input {
+  font-family: Courier New;
+  background: white;
+  border-radius: 5px;
+  height: 2rem;
+  width: 15rem;
+  font-size: 1rem;
+  border: none;
+  color: black;
+  padding: 0 1rem;
+  margin: 0 5px;
+}
+
+button {
+  background: green;
+  border: none;
+  color: white;
+  box-shadow: none;
+  min-width: 5rem;
+  height: 2rem;
+  border-radius: 12px;
+  font-family: Courier New;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+a {
+  margin: 1rem 0;
+}
+
+.Home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  &__header {
+    color: white;
+    font-size: 2rem;
+    position: absolute;
+    top: 20vh;
+    font-weight: 500;
+  }
+
+  &__form-row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__partnership-details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    align-items: center;
+
+    > div {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.NewParty {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  &__form-row {
+    display: flex;
+    flex-direction: row;
+  }
+}
