@@ -81,4 +81,11 @@ a {
     display: flex;
     flex-direction: row;
   }
+
+  &__estimate-btn {
+    min-width: 70vh;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
 }

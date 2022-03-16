@@ -2,7 +2,7 @@ import Web3 from "web3";
 
 // ganache data:
 const ganacheURL = "http://127.0.0.1:7545";
-const contractAddress = "0xB962CB376fe1D6c79123bb057EFa7ff76f5fd245";
+export const contractAddress = "0xB962CB376fe1D6c79123bb057EFa7ff76f5fd245";
 export const deployOwner = "0x9f4BB5664600F404E0389FfCb6b40fDd53C74e10";
 
 export const contract = () => {
