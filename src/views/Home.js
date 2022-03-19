@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 
 import Web3 from "web3";
 
-import { contract } from "../abi.js";
+import { contract, contractAddress } from "../abi.js";
+import { HomeWrapper } from "./HomeWrapper";
 
 import detectEthereumProvider from "@metamask/detect-provider";
 
@@ -14,31 +15,22 @@ export const Home = () => {
     next: 1,
     exists: false,
   });
-
-  let ethereum;
-  let accounts;
-  const connectMetaMask = async () => {
-    ethereum = await detectEthereumProvider();
-    if (!ethereum) {
-      alert("Please install MetaMask!");
-      return;
-    }
-    accounts = await ethereum.request({ method: "eth_requestAccounts" });
-    console.log({ accounts });
-  };
+  const [message, setMessage] = useState("");
+  const [connectedAccount, setConnectedAccount] = useState("");
 
   const getWhoOwes = async (name) => {
     return await contract().methods.getWhoOwes(name).call();
   };
 
   const flipNext = async (partnershipName) => {
-    await connectMetaMask();
+    setMessage("");
+    const ethereum = await detectEthereumProvider();
 
     const hashedMessage = Web3.utils.sha3("flipOwer");
 
     const sig = await ethereum.request({
       method: "personal_sign",
-      params: [hashedMessage, accounts[0]],
+      params: [hashedMessage, connectedAccount],
     });
 
     const r = sig.slice(0, 66);
@@ -46,16 +38,26 @@ export const Home = () => {
     const v = parseInt(sig.slice(130, 132), 16);
 
     try {
-      const resp = await contract()
+      const encodedData = await contract()
         .methods.flipOwer(partnershipName, hashedMessage, v, r, s)
-        .send({ from: accounts[0] });
+        .encodeABI();
+
+      const transactionParams = {
+        to: contractAddress,
+        from: connectedAccount,
+        data: encodedData,
+      };
+      const resp = await ethereum.request({
+        method: "eth_sendTransaction",
+        params: [transactionParams],
+      });
       console.log({ resp });
-      if (resp.status === true) {
-        setViewPartnership({
-          ...viewPartnership,
-          next: viewPartnership.next === "1" ? "2" : "1",
-        });
-      }
+
+      setViewPartnership({
+        ...viewPartnership,
+        next: viewPartnership.next === "1" ? "2" : "1",
+      });
+      setMessage("woohoo flipped! (give it a second to update on chain)");
     } catch (e) {
       console.log({ e });
       console.log("there was an error, correct signature?");
@@ -64,6 +66,7 @@ export const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     try {
       const resp = await getWhoOwes(partnershipName);
@@ -76,39 +79,49 @@ export const Home = () => {
     } catch (e) {
       console.log({ e });
       console.log("there was an error, does it exist?");
+      setMessage(`error finding: ${partnershipName}. does it exist?`);
     }
   };
 
   return (
-    <div className="Home">
-      <div className="Home__header">who got next?</div>
-      <form onSubmit={handleSubmit}>
+    <HomeWrapper setConnectedAccount={setConnectedAccount}>
+      <div className="Home">
+        <form onSubmit={handleSubmit}>
+          <div className="Home__form-row">
+            <div>
+              <input
+                type="text"
+                placeholder="input partnership name"
+                value={partnershipName}
+                onChange={(e) => setPartnershipName(e.target.value)}
+              />
+            </div>
+            <div>
+              <button type="submit">search</button>
+            </div>
+          </div>
+        </form>
         <div className="Home__form-row">
-          <div>
-            <input
-              type="text"
-              placeholder="input partnership name"
-              value={partnershipName}
-              onChange={(e) => setPartnershipName(e.target.value)}
-            />
-          </div>
-          <div>
-            <button type="submit">search</button>
-          </div>
+          <Link to="/new">create new</Link>
         </div>
-      </form>
-      <div className="Home__form-row">
-        <Link to="/new">create new</Link>
+        {viewPartnership.exists && (
+          <>
+            <div className="Home__partnership-details">
+              <div>party: {viewPartnership.name}</div>
+              <div>next (either 1 or 2): {viewPartnership.next}</div>
+            </div>
+            <div>
+              <button
+                disabled={!connectedAccount}
+                onClick={() => flipNext(partnershipName)}
+              >
+                flip next
+              </button>
+            </div>
+          </>
+        )}
+        <div className="Message">{message}</div>
       </div>
-      {viewPartnership.exists && (
-        <div className="Home__partnership-details">
-          <div>party: {viewPartnership.name}</div>
-          <div>next (either 1 or 2): {viewPartnership.next}</div>
-          <div>
-            <button onClick={() => flipNext(partnershipName)}>flip next</button>
-          </div>
-        </div>
-      )}
-    </div>
+    </HomeWrapper>
   );
 };

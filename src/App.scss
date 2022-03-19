@@ -19,6 +19,10 @@ input {
   margin: 0 5px;
 }
 
+input:focus {
+  outline: 2px solid blue;
+}
+
 button {
   background: green;
   border: none;
@@ -32,25 +36,55 @@ button {
   cursor: pointer;
 }
 
-a {
-  margin: 1rem 0;
+button:disabled {
+  opacity: 0.5;
+  cursor: auto;
 }
 
-.Home {
+a {
+  margin: 1rem 0;
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  background: green;
+}
+
+.header {
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  top: 20vh;
+  font-weight: 500;
+}
+
+.Message {
+  margin-top: 2rem;
+  width: 40vh;
+  text-align: center;
+}
+
+.HomeWrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding-top: 40vh;
 
+  &__connected-acct {
+    position: absolute;
+    bottom: 10vh;
+    color: white;
+  }
+}
+
+.Home {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  &__header {
-    color: white;
-    font-size: 2rem;
-    position: absolute;
-    top: 20vh;
-    font-weight: 500;
-  }
 
   &__form-row {
     display: flex;
@@ -60,17 +94,23 @@ a {
   &__partnership-details {
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
-    align-items: center;
+    margin: 2rem 0;
+    align-items: start;
+    border: 2px solid green;
+    padding: 10px;
+    border-radius: 5px;
+    background: white;
+    font-size: 20px;
 
     > div {
-      margin-bottom: 0.5rem;
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+      }
     }
   }
 }
 
 .NewParty {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
 

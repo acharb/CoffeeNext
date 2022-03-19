@@ -18,10 +18,8 @@
  *
  */
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+require("dotenv").config();
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   /**
@@ -35,10 +33,21 @@ module.exports = {
    */
 
   networks: {
+    ropsten: {
+      provider: function () {
+        return new HDWalletProvider(
+          process.env.SECRET_KEY,
+          // "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_PROJECT_ID
+          "wss://ropsten.infura.io/ws/v3/" +
+            process.env.REACT_APP_INFURA_PROJECT_ID
+        );
+      },
+      network_id: 3,
+    },
     ganache: {
       host: "127.0.0.1",
-      port: 7545, 
-      network_id: "5777", 
+      port: 7545,
+      network_id: "5777",
     },
   },
 
