@@ -69,7 +69,7 @@ a:hover {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding-top: 40vh;
 
@@ -95,7 +95,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     margin: 2rem 0;
-    align-items: start;
+    align-items: flex-start;
     border: 2px solid green;
     padding: 10px;
     border-radius: 5px;

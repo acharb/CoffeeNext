@@ -17,6 +17,7 @@ export const Home = () => {
   });
   const [message, setMessage] = useState("");
   const [connectedAccount, setConnectedAccount] = useState("");
+  const [successTxHash, setSuccessTxHash] = useState("");
 
   const getWhoOwes = async (name) => {
     return await contract().methods.getWhoOwes(name).call();
@@ -24,6 +25,7 @@ export const Home = () => {
 
   const flipNext = async (partnershipName) => {
     setMessage("");
+    setSuccessTxHash("");
     const ethereum = await detectEthereumProvider();
 
     const hashedMessage = Web3.utils.sha3("flipOwer");
@@ -53,11 +55,13 @@ export const Home = () => {
       });
       console.log({ resp });
 
+      setSuccessTxHash(resp);
+
       setViewPartnership({
         ...viewPartnership,
         next: viewPartnership.next === "1" ? "2" : "1",
       });
-      setMessage("woohoo flipped! (give it a second to update on chain)");
+      setMessage("woohoo flipped! (give it a moment to update on chain)");
     } catch (e) {
       console.log({ e });
       console.log("there was an error, correct signature?");
@@ -67,6 +71,7 @@ export const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setSuccessTxHash("");
 
     try {
       const resp = await getWhoOwes(partnershipName);
@@ -107,8 +112,12 @@ export const Home = () => {
         {viewPartnership.exists && (
           <>
             <div className="Home__partnership-details">
-              <div>party: {viewPartnership.name}</div>
-              <div>next (either 1 or 2): {viewPartnership.next}</div>
+              <div>
+                <b>party:</b> {viewPartnership.name}
+              </div>
+              <div>
+                <b>next (1 or 2):</b> {viewPartnership.next}
+              </div>
             </div>
             <div>
               <button
@@ -121,6 +130,19 @@ export const Home = () => {
           </>
         )}
         <div className="Message">{message}</div>
+        {successTxHash && (
+          <div>
+            <br />
+            <br />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://ropsten.etherscan.io/tx/${successTxHash}`}
+            >
+              check status on etherscan ->
+            </a>
+          </div>
+        )}
       </div>
     </HomeWrapper>
   );

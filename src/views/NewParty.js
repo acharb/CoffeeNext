@@ -11,6 +11,7 @@ export const NewParty = () => {
   const [otherPublicKey, setOtherPublicKey] = useState("");
   const [message, setMessage] = useState("");
   const [connectedAccount, setConnectedAccount] = useState("");
+  const [successTxHash, setSuccessTxHash] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,8 +34,9 @@ export const NewParty = () => {
       });
 
       console.log({ resp });
+      setSuccessTxHash(resp);
 
-      setMessage("woohoo success!");
+      setMessage("woohoo success! (give it a moment to update on chain)");
     } catch (e) {
       console.log({ e });
       setMessage("oops, something went wrong. Does it already exist?");
@@ -92,7 +94,20 @@ export const NewParty = () => {
           </div>
         </form>
         <Link to="/">go home</Link>
-        <div>{message}</div>
+        <div className="Message">{message}</div>
+        {successTxHash && (
+          <div>
+            <br />
+            <br />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={`https://ropsten.etherscan.io/tx/${successTxHash}`}
+            >
+              check status on etherscan ->
+            </a>
+          </div>
+        )}
       </div>
     </HomeWrapper>
   );
