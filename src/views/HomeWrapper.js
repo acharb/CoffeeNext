@@ -29,6 +29,18 @@ export const HomeWrapper = ({
         ) : (
           <span>need to connect to metamask</span>
         )}
+        <br />
+        (Ropsten only currently)
+      </div>
+      <div className="HomeWrapper__a-github">
+        source code:{" "}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/acharb/CoffeeNext"
+        >
+          https://github.com/acharb/CoffeeNext
+        </a>
       </div>
       <div>{children}</div>
     </div>

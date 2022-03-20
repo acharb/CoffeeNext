@@ -43,28 +43,6 @@ export const NewParty = () => {
     }
   };
 
-  // doesn't work with Infura, would need to figure out how to do with a raw transaction
-  // const handleEstimate = async (e) => {
-  //   e.preventDefault();
-  //   const ethereum = await detectEthereumProvider();
-  //   if (!ethereum) {
-  //     alert("Please install MetaMask!");
-  //     return;
-  //   }
-  //   const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-
-  //   try {
-  //     const resp = await contract()
-  //       .methods.register(newPartnership, connectedAccount, otherPublicKey)
-  //       .estimateGas({ from: connectedAccount });
-
-  //     setGasEstimate(resp);
-  //   } catch (e) {
-  //     console.log({ e });
-  //     setMessage("oops, something went wrong. Does it already exist?");
-  //   }
-  // };
-
   return (
     <HomeWrapper setConnectedAccount={setConnectedAccount}>
       <div className="NewParty">

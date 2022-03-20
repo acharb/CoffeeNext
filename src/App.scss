@@ -77,6 +77,13 @@ a:hover {
     position: absolute;
     bottom: 10vh;
     color: white;
+    text-align: center;
+  }
+
+  &__a-github {
+    position: absolute;
+    bottom: 5vh;
+    color: white;
   }
 }
 

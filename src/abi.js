@@ -1,10 +1,5 @@
 import Web3 from "web3";
 
-// ganache data:
-// const chainURL = "http://127.0.0.1:7545";
-// export const contractAddress = "0xB962CB376fe1D6c79123bb057EFa7ff76f5fd245";
-
-// ropsten data:
 const chainURL =
   "https://ropsten.infura.io/v3/" + process.env.REACT_APP_INFURA_PROJECT_ID;
 export const contractAddress = process.env.REACT_APP_ROPSTEN_CONTRACT_ADDRESS;
@@ -14,7 +9,6 @@ export const contract = () => {
   return new web3.eth.Contract(CoffeeNextABI, contractAddress);
 };
 
-// TODO - figure out how to import this automatically from the build
 export const CoffeeNextABI = [
   {
     anonymous: false,
