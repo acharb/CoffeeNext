@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import Web3 from "web3";
 
 import { contract, contractAddress } from "../abi.js";
 import { HomeWrapper } from "./HomeWrapper";
+import { ConnectedContext } from "../App";
 
 import detectEthereumProvider from "@metamask/detect-provider";
 
@@ -16,8 +17,8 @@ export const Home = () => {
     exists: false,
   });
   const [message, setMessage] = useState("");
-  const [connectedAccount, setConnectedAccount] = useState("");
   const [successTxHash, setSuccessTxHash] = useState("");
+  const { connectedAccount } = useContext(ConnectedContext);
 
   const getWhoOwes = async (name) => {
     return await contract().methods.getWhoOwes(name).call();
@@ -53,10 +54,8 @@ export const Home = () => {
         method: "eth_sendTransaction",
         params: [transactionParams],
       });
-      console.log({ resp });
 
       setSuccessTxHash(resp);
-
       setViewPartnership({
         ...viewPartnership,
         next: viewPartnership.next === "1" ? "2" : "1",
@@ -89,7 +88,7 @@ export const Home = () => {
   };
 
   return (
-    <HomeWrapper setConnectedAccount={setConnectedAccount}>
+    <HomeWrapper>
       <div className="Home">
         <form onSubmit={handleSubmit}>
           <div className="Home__form-row">
@@ -131,8 +130,7 @@ export const Home = () => {
         )}
         <div className="Message">{message}</div>
         {successTxHash && (
-          <div>
-            <br />
+          <div className="etherscan-link">
             <br />
             <a
               target="_blank"

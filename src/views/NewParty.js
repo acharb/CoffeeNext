@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { contract, contractAddress } from "../abi.js";
 import { HomeWrapper } from "./HomeWrapper";
+import { ConnectedContext } from "../App";
 
 import detectEthereumProvider from "@metamask/detect-provider";
 
@@ -10,8 +11,8 @@ export const NewParty = () => {
   const [newPartnership, setNewPartnership] = useState("");
   const [otherPublicKey, setOtherPublicKey] = useState("");
   const [message, setMessage] = useState("");
-  const [connectedAccount, setConnectedAccount] = useState("");
   const [successTxHash, setSuccessTxHash] = useState("");
+  const { connectedAccount } = useContext(ConnectedContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +34,7 @@ export const NewParty = () => {
         params: [transactionParams],
       });
 
-      console.log({ resp });
       setSuccessTxHash(resp);
-
       setMessage("woohoo success! (give it a moment to update on chain)");
     } catch (e) {
       console.log({ e });
@@ -44,7 +43,7 @@ export const NewParty = () => {
   };
 
   return (
-    <HomeWrapper setConnectedAccount={setConnectedAccount}>
+    <HomeWrapper>
       <div className="NewParty">
         <form onSubmit={handleSubmit}>
           <div className="NewParty__form-row">
@@ -74,8 +73,7 @@ export const NewParty = () => {
         <Link to="/">go home</Link>
         <div className="Message">{message}</div>
         {successTxHash && (
-          <div>
-            <br />
+          <div className="etherscan-link">
             <br />
             <a
               target="_blank"
