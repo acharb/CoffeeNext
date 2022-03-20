@@ -49,6 +49,7 @@ a {
   margin: 1rem 0;
   text-decoration: none;
   color: white;
+  cursor: pointer;
 }
 
 a:hover {
@@ -148,5 +149,30 @@ a:hover {
     display: flex;
     justify-content: center;
     margin-top: 2rem;
+  }
+
+  &__link-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+      background: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 0;
+      outline: none;
+      height: auto;
+      padding: 0;
+    }
+
+    button:hover {
+      background: green;
+    }
+  }
+
+  &__all-partys {
+    width: 50vh;
+    text-align: center;
   }
 }

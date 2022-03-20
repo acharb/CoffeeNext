@@ -12,6 +12,7 @@ export const NewParty = () => {
   const [otherPublicKey, setOtherPublicKey] = useState("");
   const [message, setMessage] = useState("");
   const [successTxHash, setSuccessTxHash] = useState("");
+  const [allPartnerships, setAllPartnerships] = useState([]);
   const { connectedAccount } = useContext(ConnectedContext);
 
   const handleSubmit = async (e) => {
@@ -39,6 +40,17 @@ export const NewParty = () => {
     } catch (e) {
       console.log({ e });
       setMessage("oops, something went wrong. Does it already exist?");
+    }
+  };
+
+  const getAllPartnerships = async () => {
+    try {
+      const resp = await contract().methods.getPartnerships().call();
+      console.log({ resp });
+      setAllPartnerships(resp);
+    } catch (e) {
+      console.error("error");
+      console.log({ e });
     }
   };
 
@@ -70,7 +82,13 @@ export const NewParty = () => {
             </div>
           </div>
         </form>
-        <Link to="/">go home</Link>
+        <div className="NewParty__link-stack">
+          <Link to="/">go home</Link>
+          <button onClick={getAllPartnerships}>see all accounts</button>
+        </div>
+        <div className="NewParty__all-partys">
+          {allPartnerships.map((p) => p + ", ")}
+        </div>
         <div className="Message">{message}</div>
         {successTxHash && (
           <div className="etherscan-link">
